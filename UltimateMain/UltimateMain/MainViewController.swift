@@ -6,7 +6,6 @@
 //
 
 import UIKit
-import UserNotifications
 
 class MainViewController: UIViewController {
     
@@ -22,36 +21,8 @@ class MainViewController: UIViewController {
         tableView.dataSource = self
         
         loadData()
-        localNotification()
-    }
-    func localNotification() {
-        UNUserNotificationCenter.current().requestAuthorization(options: [.alert,.sound,.badge]) { (granted, Error) in
-            guard Error == nil else {
-                print("local error\(Error?.localizedDescription)")
-                return
-            }
-            if granted {
-                ("Notification is granted")
-            } else {
-                print("The user has denied notification ")
-            }
-            
-        }
     }
     
-    func setCalenderNotification(title:String, subtitle:String, body:String, badgeNumber: NSNumber?, sound: UNNotificationSound?, date: Date)-> String {
-        let content = UNMutableNotificationContent()
-        content.title = title
-        content.subtitle = subtitle
-        content.body = body
-        content.sound = sound
-        content.badge = badgeNumber
-        
-        var dateComponents = Calendar.current.dateComponents([.year, .month, .day, .hour, .minute], from: date)
-        func dateComponenents.second = 00
-        let trigger = UNCalendarNotificationTrigger(dateMatching: dateComponents, repeats: false)
-    }
-   
     func loadData(){
         let directoryURL  = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
         let documentURL = directoryURL.appendingPathComponent("todos").appendingPathComponent("json")
@@ -79,8 +50,6 @@ class MainViewController: UIViewController {
         } catch {
             print("error : Could not save data\(error.localizedDescription)")
         }
-        let toDoItem = toDoItems.first!
-        let notificationsID = setCalenderNotification(title: toDoItem.name, subtitle: "SUBTITLE will be here", body: toDoItem.notes, badgeNumber: nil, sound: .default, date: toDoItem.date)
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
